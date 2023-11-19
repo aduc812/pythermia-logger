@@ -52,7 +52,7 @@ def create_table(data_items):
         dtp_txt = dtp_convert(val)
         dblines.append(f"{name}  {dtp_txt}")
     dbreq = create_table_header + ",\n".join(dblines) + "\n);"
-    print(dbreq)
+    return dbreq
 
 
 async def main():
@@ -111,18 +111,18 @@ async def main():
         cur = con.cursor()
 
         # check if table exists
-        res = cur.execute(
+        cur.execute(
             "SELECT name FROM sqlite_master WHERE type='table' AND name='parameters' LIMIT 1;"
         )
 
-        if res.fetchall() != [("parameters",)]:
+        if cur.fetchall() != [("parameters",)]:
             print("table does not exist")
             print(create_table_req)
             # cur.execute(create_table_req)
 
         names, vals = zip(*thermia.data.items())
         insert_row_req = insert_row_header.format(names, vals)
-        print(insert_value_req)
+        print(insert_row_req)
         # cur.execute(insert_value_req)
 
 
