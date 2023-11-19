@@ -33,6 +33,8 @@ def dtp_convert(val):
         return "INTEGER NOT NULL"
     if type(val) is float:
         return "FLOAT NOT NULL"
+    if type(val) is bool:
+        return "INTEGER NOT NULL"
 
 
 # heatpum IP address/hostname
