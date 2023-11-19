@@ -102,6 +102,7 @@ async def main():
         return
 
     if thermia.available:
+        timenow = datetime.now(UTC)
         print(f"Data available: {thermia.available}")
         print(f"Model: {thermia.model}")
         print(f"Firmware: {thermia.firmware}")
@@ -122,7 +123,8 @@ async def main():
 
         names, vals = zip(*thermia.data.items())
         names = names + ("TIMESTAMP",)
-        vals = vals + (str(int(datetime.datetime.timestamp(nn))),)
+
+        vals = vals + (str(int(datetime.timestamp(timenow))),)
 
         insert_row_req = insert_row_header.format(names, vals)
         print(insert_row_req)
