@@ -18,23 +18,18 @@ from pythermiagenesis.const import (
     KEY_DATATYPE,
     ATTR_COIL_ENABLE_HEAT,
     ATTR_COIL_ENABLE_BRINE_IN_MONITORING,
-    TYPE_BIT,
-    TYPE_INT,
-    TYPE_UINT,
-    TYPE_LONG,
-    TYPE_STATUS,
 )
 
 
 def dtp_convert(val):
     if type(val) is str:
-        return "TEXT NOT NULL"
+        return "TEXT"
     if type(val) is int:
-        return "INTEGER NOT NULL"
+        return "INTEGER"
     if type(val) is float:
-        return "FLOAT NOT NULL"
+        return "FLOAT"
     if type(val) is bool:
-        return "INTEGER NOT NULL"
+        return "INTEGER"
 
 
 # heatpum IP address/hostname
@@ -45,6 +40,7 @@ logging.basicConfig(level=logging.INFO)
 
 create_table_header = """ CREATE TABLE parameters(
 ID INTEGER PRIMARY KEY AUTOINCREMENT,
+TIMESTAMP DATETIME NOT NULL,
 """
 
 
