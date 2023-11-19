@@ -27,7 +27,7 @@ from pythermiagenesis.const import (
 
 
 def dtp_convert(val):
-    if type(val) is string:
+    if type(val) is str:
         return "TEXT NOT NULL"
     if type(val) is int:
         return "INTEGER NOT NULL"
