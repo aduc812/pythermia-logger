@@ -122,10 +122,8 @@ async def main():
             # cur.execute(create_table_req)
 
         names, vals = zip(*thermia.data.items())
-        names = names + ("TIMESTAMP",)
-
-        vals = vals + (str(int(datetime.timestamp(timenow))),)
-
+        names = ("TIMESTAMP",) + names
+        vals = (str(int(datetime.timestamp(timenow))),) + vals
         insert_row_req = insert_row_header.format(names, vals)
         print(insert_row_req)
         # cur.execute(insert_row_req)
