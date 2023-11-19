@@ -23,6 +23,7 @@ requires-python = ">=3.8.1"
 dynamic = ["version"]
 dependencies = [
   'sqlite3 ~= 3.12',
+  'nordpool >= 0.3.3',
 ]
 
 [project.optional-dependencies]
