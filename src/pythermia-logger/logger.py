@@ -41,9 +41,9 @@ logging.basicConfig(level=logging.INFO)
 
 create_table_header = """CREATE TABLE parameters(
 ID INTEGER PRIMARY KEY AUTOINCREMENT,
-TIMESTAMP DATETIME NOT NULL,
+TIMESTAMP INTEGER NOT NULL,
 """
-insert_row_header = "INSERT INTO parameters ({}) VALUES ({});"
+insert_row_header = "INSERT INTO parameters {} VALUES {};"
 
 
 def create_table(data_items):
@@ -121,9 +121,12 @@ async def main():
             # cur.execute(create_table_req)
 
         names, vals = zip(*thermia.data.items())
+        names = names + ("TIMESTAMP",)
+        vals = vals + (str(int(datetime.datetime.timestamp(nn))),)
+
         insert_row_req = insert_row_header.format(names, vals)
         print(insert_row_req)
-        # cur.execute(insert_value_req)
+        # cur.execute(insert_row_req)
 
 
 # for i, (name, val) in enumerate():
