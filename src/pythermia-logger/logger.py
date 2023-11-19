@@ -8,6 +8,7 @@ import asyncio
 import logging
 from sys import argv
 import sqlite3
+from datetime import datetime, UTC
 
 from pythermiagenesis import ThermiaGenesis
 from pythermiagenesis import ThermiaConnectionError
@@ -38,10 +39,11 @@ PORT = 502
 # logging.basicConfig(level=logging.DEBUG)
 logging.basicConfig(level=logging.INFO)
 
-create_table_header = """ CREATE TABLE parameters(
+create_table_header = """CREATE TABLE parameters(
 ID INTEGER PRIMARY KEY AUTOINCREMENT,
 TIMESTAMP DATETIME NOT NULL,
 """
+insert_row_header = "INSERT INTO parameters ({}) VALUES ({});"
 
 
 def create_table(data_items):
@@ -49,7 +51,7 @@ def create_table(data_items):
     for i, (name, val) in enumerate(data_items):
         dtp_txt = dtp_convert(val)
         dblines.append(f"{name}  {dtp_txt}")
-    dbreq = create_table_header + ",\n".join(dblines) + "\n)"
+    dbreq = create_table_header + ",\n".join(dblines) + "\n);"
     print(dbreq)
 
 
@@ -103,12 +105,29 @@ async def main():
         print(f"Data available: {thermia.available}")
         print(f"Model: {thermia.model}")
         print(f"Firmware: {thermia.firmware}")
-        # for i, (name, val) in enumerate(thermia.data.items()):
-        #    print(f"{REGISTERS[name][KEY_ADDRESS]}\t{name}\t{val}")
+
         create_table_req = create_table(thermia.data.items())
         con = sqlite3.connect("thermia-log.db")
         cur = con.cursor()
-        # cur.execute(create_table_req)
+
+        # check if table exists
+        res = cur.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name='parameters' LIMIT 1;"
+        )
+
+        if res.fetchall() != [("parameters",)]:
+            print("table does not exist")
+            print(create_table_req)
+            # cur.execute(create_table_req)
+
+        names, vals = zip(*thermia.data.items())
+        insert_row_req = insert_row_header.format(names, vals)
+        print(insert_value_req)
+        # cur.execute(insert_value_req)
+
+
+# for i, (name, val) in enumerate():
+#    print(f"{REGISTERS[name][KEY_ADDRESS]}\t{name}\t{val}")
 
 
 loop = asyncio.get_event_loop()
