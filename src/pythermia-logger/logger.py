@@ -21,6 +21,8 @@ from pythermiagenesis.const import (
     ATTR_COIL_ENABLE_BRINE_IN_MONITORING,
 )
 
+LOG_TABLE_NAME = "parameters"
+
 
 def dtp_convert(val):
     if type(val) is str:
@@ -113,20 +115,26 @@ async def main():
 
         # check if table exists
         cur.execute(
-            "SELECT name FROM sqlite_master WHERE type='table' AND name='parameters' LIMIT 1;"
+            f"SELECT name FROM sqlite_master WHERE type='table' AND name='{LOG_TABLE_NAME}' LIMIT 1;"
         )
 
-        if cur.fetchall() != [("parameters",)]:
+        if cur.fetchall() != [(LOG_TABLE_NAME,)]:
             print("table does not exist")
             print(create_table_req)
-            # cur.execute(create_table_req)
+            cur.execute(create_table_req)
 
         names, vals = zip(*thermia.data.items())
         names = ("TIMESTAMP",) + names
         vals = (str(int(datetime.timestamp(timenow))),) + vals
         insert_row_req = insert_row_header.format(names, vals)
         print(insert_row_req)
-        # cur.execute(insert_row_req)
+        cur.execute(insert_row_req)
+
+        query = f"SELECT COUNT(*) FROM {LOG_TABLE_NAME}"
+        cursor.execute(query)
+        result = cursor.fetchone()
+        row_count = result[0]
+        print(f"total entries now: {row_count}")
 
 
 # for i, (name, val) in enumerate():
