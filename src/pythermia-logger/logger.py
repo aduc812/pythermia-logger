@@ -117,9 +117,9 @@ async def main():
         cur.execute(
             f"SELECT name FROM sqlite_master WHERE type='table' AND name='{LOG_TABLE_NAME}' LIMIT 1;"
         )
-
-        if cur.fetchall() != [(LOG_TABLE_NAME,)]:
-            print("table does not exist")
+        result = cur.fetchall()
+        if result != [(LOG_TABLE_NAME,)]:
+            print("table does not exist: returned {result}")
             print(create_table_req)
             cur.execute(create_table_req)
 
@@ -127,10 +127,10 @@ async def main():
         names = ("TIMESTAMP",) + names
         vals = (str(int(datetime.timestamp(timenow))),) + vals
         insert_row_req = insert_row_header.format(names, vals)
-        print(insert_row_req)
+        # print(insert_row_req)
         cur.execute(insert_row_req)
 
-        query = f"SELECT COUNT(*) FROM {LOG_TABLE_NAME}"
+        query = f"SELECT COUNT(*) FROM {LOG_TABLE_NAME} ;"
         cur.execute(query)
         result = cur.fetchone()
         row_count = result[0]
