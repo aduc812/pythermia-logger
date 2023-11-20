@@ -131,8 +131,8 @@ async def main():
         cur.execute(insert_row_req)
 
         query = f"SELECT COUNT(*) FROM {LOG_TABLE_NAME}"
-        cursor.execute(query)
-        result = cursor.fetchone()
+        cur.execute(query)
+        result = cur.fetchone()
         row_count = result[0]
         print(f"total entries now: {row_count}")
 
