@@ -136,6 +136,9 @@ async def main():
         row_count = result[0]
         print(f"total entries now: {row_count}")
 
+        cur.close()
+        con.close()
+
 
 # for i, (name, val) in enumerate():
 #    print(f"{REGISTERS[name][KEY_ADDRESS]}\t{name}\t{val}")
