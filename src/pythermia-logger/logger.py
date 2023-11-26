@@ -80,7 +80,7 @@ async def main():
         protocol=prot,
         port=port,
         kind=kind,
-        delay=0.15,
+        delay=0.01,
         baudrate=baud,
         bytesize=btsz,
         parity=prty,
