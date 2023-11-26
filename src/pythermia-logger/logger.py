@@ -110,7 +110,7 @@ async def main():
         print(f"Firmware: {thermia.firmware}")
 
         create_table_req = create_table(thermia.data.items())
-        con = sqlite3.connect("thermia-log.db")
+        con = sqlite3.connect("/home/bms/thermia-log.db")
         cur = con.cursor()
 
         # check if table exists
