@@ -119,8 +119,8 @@ async def main():
         )
         result = cur.fetchall()
         if result != [(LOG_TABLE_NAME,)]:
-            print("table does not exist: returned {result}")
-            print(create_table_req)
+            print(f"table does not exist: returned {result}")
+            # print(create_table_req)
             cur.execute(create_table_req)
 
         names, vals = zip(*thermia.data.items())
