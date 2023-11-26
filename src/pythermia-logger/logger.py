@@ -136,7 +136,7 @@ async def main():
         row_count = result[0]
         print(f"total entries now: {row_count}")
 
-        query = f"SELECT ID,TIMEWSTAMP FROM {LOG_TABLE_NAME} ORDER BY TIMESTAMP DESC LIMIT 1;"
+        query = f"SELECT ID,TIMESTAMP FROM {LOG_TABLE_NAME} ORDER BY TIMESTAMP DESC LIMIT 1;"
         cur.execute(query)
         result = cur.fetchone()
         print(f"one entry: \n {result[0]}")
