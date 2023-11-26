@@ -140,8 +140,8 @@ async def main():
         cur.execute(query)
         result = cur.fetchone()
         print(f"one entry: \n {result}")
-
         cur.close()
+        con.commit()
         con.close()
 
 
