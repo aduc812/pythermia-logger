@@ -135,13 +135,13 @@ async def main():
         try:
             con = sqlite3.connect(THERMIA_DATABASE_NAME)
             cur = con.cursor()
-            cur.execute(query)
+            cur.execute(query_count)
             result = cur.fetchone()
             row_count = result[0]
             _LOGGER.info(f"total entries now: {row_count}")
 
             if logging.DEBUG >= logging.root.level:
-                cur.execute(query)
+                cur.execute(query_lastrecord)
                 result = cur.fetchone()
                 _LOGGER.debug(f"last entry: \n {result}")
         except con.Error as e:
