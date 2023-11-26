@@ -95,40 +95,64 @@ async def main():
         _LOGGER.info(f"Data available: {thermia.available}")
 
         create_table_req = make_create_table_req(thermia.data.items())
-        con = sqlite3.connect("/home/bms/thermia-log.db")
-        cur = con.cursor()
-
-        # check if table exists
-        cur.execute(
-            f"SELECT name FROM sqlite_master WHERE type='table' AND name='{THERMIA_TABLE_NAME}' LIMIT 1;"
-        )
-        result = cur.fetchall()
-        if result != [(THERMIA_TABLE_NAME,)]:
-            _LOGGER.info(f"table does not exist ; creatning new one")
-            _LOGGER.debug(f"db creation transaction:\n {create_table_req}")
-            cur.execute(create_table_req)
 
         names, vals = zip(*thermia.data.items())
         names = ("TIMESTAMP",) + names
         vals = (str(int(datetime.timestamp(timenow))),) + vals
         insert_row_req = insert_row_header.format(names, vals)
-        _LOGGER.debug(f"record insertion transaction:\n {insert_row_req}")
-        cur.execute(insert_row_req)
 
-        query = f"SELECT COUNT(*) FROM {THERMIA_TABLE_NAME} ;"
-        cur.execute(query)
-        result = cur.fetchone()
-        row_count = result[0]
-        _LOGGER.info(f"total entries now: {row_count}")
+        try:
+            con = sqlite3.connect(THERMIA_DATABASE_NAME)
+            cur = con.cursor()
 
-        query = f"SELECT ID,TIMESTAMP FROM {THERMIA_TABLE_NAME} ORDER BY TIMESTAMP DESC LIMIT 1;"
-        cur.execute(query)
-        result = cur.fetchone()
-        _LOGGER.info(f"one entry: \n {result}")
+            # check if table exists
+            cur.execute(
+                f"SELECT name FROM sqlite_master WHERE type='table' AND name='{THERMIA_TABLE_NAME}' LIMIT 1;"
+            )
+            result = cur.fetchall()
+            if result != [(THERMIA_TABLE_NAME,)]:
+                _LOGGER.info(f"table does not exist ; creatning new one")
+                _LOGGER.debug(f"db creation transaction:\n {create_table_req}")
+                cur.execute(create_table_req)
 
-        cur.close()
-        con.commit()
-        con.close()
+            _LOGGER.debug(f"record insertion transaction:\n {insert_row_req}")
+            cur.execute(insert_row_req)
+            con.commit()
+
+        except con.Error as e:
+            _LOGGER.error(f"Cannot connect or write to database: {e}")
+            if con:
+                con.rollback()
+        finally:
+            if cur:
+                cur.close()
+            if con:
+                con.close()
+
+        # get num of entries to the db to see if anything happens
+        query_count = f"SELECT COUNT(*) FROM {THERMIA_TABLE_NAME} ;"
+        query_lastrecord = f"SELECT ID,TIMESTAMP FROM {THERMIA_TABLE_NAME} ORDER BY TIMESTAMP DESC LIMIT 1;"
+        try:
+            con = sqlite3.connect(THERMIA_DATABASE_NAME)
+            cur = con.cursor()
+            cur.execute(query)
+            result = cur.fetchone()
+            row_count = result[0]
+            _LOGGER.info(f"total entries now: {row_count}")
+
+            if logging.DEBUG >= logging.root.level:
+                cur.execute(query)
+                result = cur.fetchone()
+                _LOGGER.debug(f"last entry: \n {result}")
+        except con.Error as e:
+            _LOGGER.error(f"Cannot connect or write to database: {e}")
+            if con:
+                con.rollback()
+        finally:
+            if cur:
+                cur.close()
+            if con:
+                con.close()
 
 
 # for i, (name, val) in enumerate():

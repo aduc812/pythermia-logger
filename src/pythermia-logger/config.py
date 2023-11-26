@@ -16,4 +16,6 @@ echo = False
 
 logging_level = logging.INFO
 
+THERMIA_DATABASE_NAME = "/home/bms/thermia-log.db"
+
 THERMIA_TABLE_NAME = "parameters"
