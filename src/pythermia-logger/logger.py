@@ -128,8 +128,9 @@ async def main():
         vals = (str(int(datetime.timestamp(timenow))),) + vals
         insert_row_req = insert_row_header.format(names, vals)
         print(insert_row_req)
-        resp = cur.execute(insert_row_req)
-        print(resp)
+        cur.execute(insert_row_req)
+        result = cur.fetchone()
+        print(result)
 
         query = f"SELECT COUNT(*) FROM {LOG_TABLE_NAME} ;"
         cur.execute(query)
