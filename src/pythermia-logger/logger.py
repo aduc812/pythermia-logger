@@ -129,8 +129,6 @@ async def main():
         insert_row_req = insert_row_header.format(names, vals)
         print(insert_row_req)
         cur.execute(insert_row_req)
-        result = cur.fetchone()
-        print(result)
 
         query = f"SELECT COUNT(*) FROM {LOG_TABLE_NAME} ;"
         cur.execute(query)
@@ -141,7 +139,7 @@ async def main():
         query = f"SELECT ID,TIMESTAMP FROM {LOG_TABLE_NAME} ORDER BY TIMESTAMP DESC LIMIT 1;"
         cur.execute(query)
         result = cur.fetchone()
-        print(f"one entry: \n {result[0]}")
+        print(f"one entry: \n {result}")
 
         cur.close()
         con.close()
