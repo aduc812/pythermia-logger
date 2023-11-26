@@ -136,6 +136,11 @@ async def main():
         row_count = result[0]
         print(f"total entries now: {row_count}")
 
+        query = f"SELECT (*) FROM {LOG_TABLE_NAME} LIMIT 1;"
+        cur.execute(query)
+        result = cur.fetchone()
+        print(f"one entry: \n {result[0]}")
+
         cur.close()
         con.close()
 
