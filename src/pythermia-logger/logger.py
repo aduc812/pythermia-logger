@@ -42,7 +42,7 @@ PORT = 502
 logging.basicConfig(level=logging.INFO)
 
 create_table_header = """CREATE TABLE parameters(
-ID INTEGER PRIMARY KEY AUTOINCREMENT,
+ID INTEGER PRIMARY KEY,
 TIMESTAMP INTEGER NOT NULL,
 """
 insert_row_header = "INSERT INTO parameters {} VALUES {};"
