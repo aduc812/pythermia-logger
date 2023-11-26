@@ -24,7 +24,7 @@ from pythermiagenesis.const import (
 import config  # import host, port, kind, prot, baud, btsz, prty, stbt, echo
 
 THERMIA_TABLE_NAME = config.THERMIA_TABLE_NAME
-
+THERMIA_DATABASE_NAME = config.THERMIA_DATABASE_NAME
 _LOGGER = logging.getLogger(__name__)
 
 
