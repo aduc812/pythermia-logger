@@ -7,7 +7,7 @@
 import logging
 from sys import argv
 import sqlite3
-from datetime import datetime, UTC
+import datetime
 import requests
 import json
 from json import JSONDecodeError
