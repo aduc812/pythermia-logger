@@ -19,3 +19,10 @@ logging_level = logging.INFO
 THERMIA_DATABASE_NAME = "/home/bms/thermia-log.db"
 
 THERMIA_TABLE_NAME = "parameters"
+
+PRICES_TABLE_NAME = "electricity_prices"
+
+PRICES_REQUEST = {
+    "url": "https://dashboard.elering.ee/api/nps/price",
+    "headers": {"accept": "*/*"},
+}
