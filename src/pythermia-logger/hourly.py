@@ -48,7 +48,7 @@ FROM {PRICES_TABLE_NAME}
 WHERE TIMESTAMP >= {{}};"""
 
 insert_row_header = "INSERT INTO {} {} VALUES {};".format(
-    PRICES_TABLE_NAME, "[TIMESTAMP,PRICE]", "{}"
+    PRICES_TABLE_NAME, "(TIMESTAMP,PRICE)", "{}"
 )
 
 # get and store prices
@@ -103,7 +103,7 @@ def process_prices():
                 result = cur.fetchall()
                 print(result)
                 if result == [(0,)]:
-                    insert_row_req = insert_row_header.format([pts, pval])
+                    insert_row_req = insert_row_header.format((pts, pval))
                     _LOGGER.debug(f"record insertion transaction:\n {insert_row_req}")
                     cur.execute(insert_row_req)
             # con.commit()
