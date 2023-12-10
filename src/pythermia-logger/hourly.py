@@ -106,7 +106,7 @@ def process_prices():
                     insert_row_req = insert_row_header.format((pts, pval))
                     _LOGGER.debug(f"record insertion transaction:\n {insert_row_req}")
                     cur.execute(insert_row_req)
-            # con.commit()
+            con.commit()
 
         except con.Error as e:
             _LOGGER.error(f"Cannot connect or write to database: {e}")
