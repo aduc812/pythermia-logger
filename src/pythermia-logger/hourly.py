@@ -101,7 +101,9 @@ def process_prices():
             for pts, pval in zip(pricetimestamps, pricevalues):
                 cur.execute(check_exist_header.format(pts))
                 result = cur.fetchall()
-                print(result)
+                _LOGGER.debug(
+                    f"got price record: {(pts, pval)}; records ahead found:{result[0][0]}"
+                )
                 if result == [(0,)]:
                     insert_row_req = insert_row_header.format((pts, pval))
                     _LOGGER.debug(f"record insertion transaction:\n {insert_row_req}")
