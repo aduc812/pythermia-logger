@@ -102,7 +102,7 @@ def process_prices():
                 cur.execute(check_exist_header.format(pts))
                 result = cur.fetchall()
                 print(result)
-                if result == []:
+                if result == [(0,)]:
                     insert_row_header.format([pts, ptval])
                     _LOGGER.debug(f"record insertion transaction:\n {insert_row_req}")
                     cur.execute(insert_row_req)
